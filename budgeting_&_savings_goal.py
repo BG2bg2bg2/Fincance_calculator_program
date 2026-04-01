@@ -1,3 +1,10 @@
+#End up here from Edwing's stuff if User wants to change things concerning their budgeting
+
+#Before User gets here, there'll already be default budgeting categories (e.g. Rent/Mortgage, Food, Transportation/Gas, etc.)
+
+#Have User pick a choice: 1. Set monthly limits for budgeting categories
+
+
 #function for the goal that use has for saving
 
     #while not false

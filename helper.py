@@ -12,14 +12,60 @@ import shutil
 import queue
 import sys
 import select
-
+import csv
 # -------------------------
 # Input / typing utilities
 # -------------------------
 import math
 import turtle
+math
+#make converson base funciton with perams of og base new base and number
 wn = turtle.Screen()
 wn.tracer(0) 
+def convert_base(origonal_base,new_base,number):
+    if type(number)!=list:
+        for num,x in enumerate(str(number)):
+            if num==0:
+                number=[]
+            number.append(int(x))
+    number_convertion=0
+    #reapete the amoutn in number and multiply the var number conversion with origonal base and add the digit of the number
+    for digit in number:
+        number_convertion=number_convertion*origonal_base+digit
+    out=[]
+    #while that number is not 0 add thta number modulo to a list and flor deveide it by the newa baes
+    while number_convertion>0:
+        out.append(number_convertion%new_base)
+        number_convertion//=new_base
+    #if the newa base is 10 reapet the length of the output and cpncatonate it all and return it as a intager otherwise just return it
+    if new_base==10:
+        nout=""
+        for x in out:
+            nout=f"{nout}{x}"
+        return int(nout)
+    return out
+#define turtle data parsing with expensas as the peramater
+def parse_turtle_data(expenses):
+    names=[]
+    persentages=[]
+    amounts=[]
+    spending_over_time=[]
+    #get each key and valeu and add them to the corosponding lists then call the corospomnding functions
+    for key,val in expenses.items():
+        names.append(key)
+        persentages.append(val[0])
+        amounts.append(key[1])
+        spending=[]
+        for x in key[2]:
+            spending.append(x)
+        spending_over_time.append[spending]
+    base_val=55664661/len(expenses)
+    collors=[]
+    for x in range(len(expenses)):
+        collors.append(convert_base(10,255,int(base_val*x))))
+    convert_base
+    pie_chart(persentages,collors,nanes,100,100,(-40,-40),100,30)
+    graph(spending_over_time,(-500,100),100,10)
 def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
     fred=turtle.Turtle()
     fred.speed(0)
@@ -91,7 +137,7 @@ def graph(objs,graph_offset,graph_size,intensaty):
     wn.update()
 
 
-import csv
+
 class csv_file:
     def __init__(self,path_to_csv):
         self.path_to_csv=path_to_csv

@@ -1,38 +1,25 @@
 #ES log in log out 
 
-#import random and string
+#make file_path be the file path to the csv or where the accounts are kept
 
-#make a funtion for random password generator
-
-    #make an inner funtion for lower
-        #return string ascii lower as a list
-
-    #make another inner funtion for upper 
-        #retrun strin ascii upper as a list 
-
-    #make another inner funtion for numbers called nums
-        #return string for special digits
-
-    #make another inner funtion for specaial chrarcters 
-        #return string fro special characaters
-
-    #make inner funtion to check 
-        # make a while true loop and make answer equals an input to what the user says 
-
-        #if answer is yes then return true
-
-        #if answer is not return false
-
-        #else print to select an actual option 
+#make a function called login 
     
-    #make an inner funtion called generate
-        #make a while loop and make lenth be equals an input of how long they want their passwords to be
-        #if lenth is a digit berak else print to select an actual number 
+    #make a while true loop 
 
-        #
+        #make username match to an input asking for the username
 
+        #open the filepath and read it as file 
+            #make csv_reader be a csv reader to the file
+            #header be next the csv reader 
+            #make rows be list csv reader
 
+        #make user found false
+        #make a loop in row 
+            #if there is not in row return 
+            #if there is a account make user found true
 
-#make a funtion called loged in 
-    
-    #
+    #ask user for what they want to obtain 
+    #make a while loop 
+        #make choice be an input
+        #if choice is 1 
+

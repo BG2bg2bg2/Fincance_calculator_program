@@ -1,10 +1,10 @@
-#ES main funtion 
+#ES main function 
 
 #Liam imports the init csv class with the file path 
 
-#BG from every file needed to be imputed imput/bring in all/everything onto this file
+#BG from every file needed to be imputed input/bring in all/everything onto this file
 
-#make a funtion called main 
+#make a function called main 
 
     #make a while true loop 
     
@@ -18,6 +18,6 @@
             
             #call login
         
-        #else if user choice is 3 then
+        #else if user choice is 3 then tell the user to select again, continue 
             
             #display thanks for using the FINANCE CALCULATOR PROGRAM
