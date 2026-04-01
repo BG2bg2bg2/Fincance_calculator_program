@@ -65,6 +65,7 @@ def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offse
         fred.color("black")
         fred.write(x,align="left",font=("Arial",key_size,"normal"))
         fred.goto(key_offset[0],key_offset[1]-num*40)
+    wn.update()
 def graph(objs,graph_offset,graph_size,intensaty):
     joe=turtle.Turtle()
     joe.penup()
@@ -87,9 +88,7 @@ def graph(objs,graph_offset,graph_size,intensaty):
                 joe.pendown()
             intensaty=graph_size*1.5/len(objs[0])
             joe.goto(graph_offset[0]+num2*intensaty,graph_offset[1]+y)
-graph(objs,graph_offset,graph_size,intensaty)
-wn.update()
-turtle.done()
+    wn.update()
 
 
 import csv
