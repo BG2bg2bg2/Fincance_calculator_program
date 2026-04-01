@@ -16,6 +16,81 @@ import select
 # -------------------------
 # Input / typing utilities
 # -------------------------
+import math
+import turtle
+wn = turtle.Screen()
+wn.tracer(0) 
+def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
+    fred=turtle.Turtle()
+    fred.speed(0)
+    fred.penup()
+    fred.goto(x_offset,y_offset)
+    fred.pendown()
+    fred.circle(size)
+    fred.goto(x_offset,y_offset+size)
+    last_x=x_offset
+    last_y=y_offset
+    for num,x in enumerate(list_of_persentages):
+        fred.penup()
+        fred.goto(last_x,last_y)
+        fred.pendown()
+        fred.color(list_of_collors[num])
+        fred.begin_fill()
+        fred.pendown()
+        fred.circle(size,(x*3.6))
+        last_x=fred.xcor()
+        last_y=fred.ycor()
+        fred.goto(x_offset,y_offset+size)
+        fred.end_fill()
+    fred.penup()
+    fred.goto(key_offset[0],key_offset[1]+50)
+    fred.color("black")
+    fred.write("key:",font=("Arial",int(key_size*1.3),"normal"))
+    fred.goto(key_offset)
+    for num,x in enumerate(list_of_names):
+        fred.pendown()
+        fred.begin_fill()
+        fred.color(list_of_collors[num])
+        fred.right(90)
+        fred.forward(key_size)
+        fred.right(90)
+        fred.forward(key_size)
+        fred.right(90)
+        fred.forward(key_size)
+        fred.right(90)
+        fred.forward(key_size)
+        fred.end_fill()
+        fred.penup()
+        fred.goto(key_offset[0]+key_size/.8,key_offset[1]-key_size/.9-num*40)
+        fred.color("black")
+        fred.write(x,align="left",font=("Arial",key_size,"normal"))
+        fred.goto(key_offset[0],key_offset[1]-num*40)
+def graph(objs,graph_offset,graph_size,intensaty):
+    joe=turtle.Turtle()
+    joe.penup()
+    joe.speed(0)
+    joe.goto(graph_offset)
+    joe.left(90)
+    joe.pendown()
+    joe.forward(graph_size)
+    joe.backward(graph_size)
+    joe.right(90)
+    joe.forward(graph_size*1.5)
+    joe.goto(graph_offset)
+    joe.pensize(3)
+    for num1,x in enumerate(objs):
+        joe.penup()
+        joe.goto(graph_offset)
+        joe.color(list_of_collors[num1])
+        for num2,y in enumerate(x):
+            if num2==1:
+                joe.pendown()
+            intensaty=graph_size*1.5/len(objs[0])
+            joe.goto(graph_offset[0]+num2*intensaty,graph_offset[1]+y)
+graph(objs,graph_offset,graph_size,intensaty)
+wn.update()
+turtle.done()
+
 
 import csv
 class csv_file:
