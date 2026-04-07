@@ -1,6 +1,6 @@
 # Finance_calculator_program
-Writen and typed by BG
-instrucitons for how to use
+Written and typed by BG
+instruction for how to use
 
 ## How to use
 ***

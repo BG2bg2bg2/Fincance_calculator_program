@@ -26,3 +26,12 @@
         #else if user choice is 3 then tell the user to select again, continue 
             
             #display thanks for using the FINANCE CALCULATOR PROGRAM
+import budgeting_and_savings_goal,helper,login_logout,program_stucture,utill_functions,random_password_generator
+def main():
+    data=utill_functions.csv_file("data.csv")
+    if not(login_logout.login(data)):
+        return
+    
+    pass
+if __name__=="__main__":
+    main()
