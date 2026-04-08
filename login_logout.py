@@ -48,7 +48,36 @@ def login(data):
                     password=utill_functions.get_valid_type(str,"what is your password: ")
                     if utill_functions.get_valid_type(str,f"do you want {password} to be your password (this canot be changed later)(y/n): ",valid=["y",'n'])=="y":
                         break
-
+            while True:
+                income=utill_functions.get_valid_type(int,"what is your hourly income: ",valid=(0,10000000000))
+                if utill_functions.get_valid_type(str,f"is ${income} your hourly wage (y/n): ",valid=["y",'n'])=="y":
+                    break
+            expenses=[]
+            amounts=[]
+            count=0
+            while True:
+                count+=1
+                expence=utill_functions.get_valid_type(str,f"what is the name of your #{count} expence(0 to stop adding more): ")
+                if expence=="0":
+                    if len(expenses)>0:
+                        break
+                    else:
+                        print("you cant have 0 expenses")
+                        continue
+                amount=utill_functions.get_valid_type(int,f"what is the cost of {expence}: ")
+                if utill_functions.get_valid_type(str,f"do you want to add {expence}:{amount}(y/n): ",valid=["y","n"])=="y":
+                    expenses.append(expence)
+                    amounts.append(amount)
+            while True:
+                income=utill_functions.get_valid_type(int,"how much is in your savings: ",valid=(0,100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100))
+                if utill_functions.get_valid_type(str,f"is ${income} your hourly wage (y/n): ",valid=["y",'n'])=="y":
+                    break
+            while True:
+                income=utill_functions.get_valid_type(int,"what is your hourly income: ",valid=(0,10000000000))
+                if utill_functions.get_valid_type(str,f"is ${income} your hourly wage (y/n): ",valid=["y",'n'])=="y":
+                    break
+            data.add([username,password])
+            utill_functions.csv_file
 
 
             #make a input asking the user for a name 
