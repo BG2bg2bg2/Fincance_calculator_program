@@ -36,8 +36,18 @@ def set_budget_limits():
 # define function as create_budget_plan()
 def create_budget_plan(data):
         def add_budget_categories(data):
-        #make thing so user just keeps listing categories till they say some
-            pass
+        #make thing so user just keeps listing categories till they say some -- sike, I changed my mind
+            budget_categories = []
+            budget_category_maxes = []
+            category_amount = utill_functions.get_valid_type(int, "How many budgeting categories will you have? (Enter number): ", invalid_prompt = 0)
+            for i in range(category_amount):
+                 category_names = input(f"Name each of your {category_amount} categories {i + 1}: ")
+                 budget_categories.append(category_names)
+
+            for category in budget_categories: 
+                 max = utill_functions.get_valid_type(int, f"Here are your categories: {budget_categories} \nWhat is the max amount of money you'll spend on each category? (enter one category's amount then enter, and continue until all categories are satisfied): ", invalid_prompt = 0)
+                 budget_category_maxes.append(max)
+    
     # get user's incomepass    income = utill_functions.get_valid_type(float,"Enter how much money you have right now: ")
     # get all category limits
     
@@ -84,6 +94,23 @@ def compare_expenses_to_budget(data):
 
 # define function as savings_goal_tracker()
 def savings_goals_tracker(data):
+    goal = utill_functions.get_valid_type(float, "What is your savings goal amount?: ", invalid_prompt= 0)
+    
+    income = utill_functions.get_valid_type(float, "What is your monthly income?: ", invalid_prompt= 0)
+    
+    percentage_to_savings = utill_functions.get_valid_type(float, "What percentage of your income goes to savings?: ", valid = (.00000000000000001, 100))
+
+    goal_progress = utill_functions.get_valid_type(float, "How close are you to your savings goal? (enter amount of money in savings currently): ")
+    
+    convert_percent_to_decimal = percentage_to_savings / 100
+
+    savings_per_month = income * convert_percent_to_decimal
+
+    goal_time = goal / savings_per_month
+    goal_time_rounded = round(goal_time, 0)
+    
+
+
     # while user does not exit:
         # ask user:
             # "What is your savings goal amount?"
