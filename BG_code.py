@@ -1,3 +1,0 @@
-#BG psudocode/code
-
-#

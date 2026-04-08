@@ -62,9 +62,9 @@ def parse_turtle_data(expenses):
     base_val=55664661/len(expenses)
     collors=[]
     for x in range(len(expenses)):
-        collors.append(convert_base(10,255,int(base_val*x))))
+        collors.append(convert_base(10,255,int(base_val*x)))
     convert_base
-    pie_chart(persentages,collors,nanes,100,100,(-40,-40),100,30)
+    pie_chart(persentages,collors,names,100,100,(-40,-40),100,30)
     graph(spending_over_time,(-500,100),100,10)
 def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
     fred=turtle.Turtle()
@@ -112,7 +112,7 @@ def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offse
         fred.write(x,align="left",font=("Arial",key_size,"normal"))
         fred.goto(key_offset[0],key_offset[1]-num*40)
     wn.update()
-def graph(objs,graph_offset,graph_size,intensaty):
+def graph(objs,graph_offset,graph_size,intensaty,list_of_collors):
     joe=turtle.Turtle()
     joe.penup()
     joe.speed(0)
@@ -156,6 +156,8 @@ class csv_file:
             print(f"An error occurred: {e}")
     def __getitem__(self,index):
         return self.rows[index]
+    def __iter__(self):
+        return iter(self.rows)
     def __str__(self):
         output=""
         for row in self.rows:

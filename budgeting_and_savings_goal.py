@@ -1,12 +1,14 @@
-# GNB - Gov Stuff (Budgeting & Savings Goal Tracker)
+# GNB - Gov Stuff (Budgeting + Savings Goal Tracker)
 
 # End up here from Edwing's menu if user selects budgeting/savings options
 
 # Before user gets here:
 # - Categories already exist (Rent, Food, Transportation, etc.)
 # - Income/expenses may already be stored by Edwing/Liam
+import utill_functions
+print("Welcome to the Budgeting/Savings Goal sector.")
 
-
+choice = utill_functions.get_valid_type(int,"0 Go back to main men\n1 to set budget limits\n2 to view budgeting plan\n3 to Compare expenses to budget\n4 to Savings goal tracker\nWhat do you want: ",valid=(0,4))
 # Ask user:
 # 1. Set budget limits
 # 2. View budgeting plan
@@ -18,9 +20,9 @@
 # BUDGETING SECTION
 
 # define function as set_budget_limits()
-
+def set_budget_limits():
     # ask user for total monthly income
-
+    income = utill_functions.get_valid_type(float, "What is your monthly income?: $")
     # for each category:
         # ask user to set a spending limit
 
@@ -29,13 +31,16 @@
     # display:
         # "Budget limits successfully set"
 
+# If 2 is the option, then all this: 
 
 # define function as create_budget_plan()
-
-    # get user's income
-
+def create_budget_plan(data):
+        def add_budget_categories(data):
+        #make thing so user just keeps listing categories till they say some
+            pass
+    # get user's incomepass    income = utill_functions.get_valid_type(float,"Enter how much money you have right now: ")
     # get all category limits
-
+    
     # calculate total planned spending
 
     # calculate remaining money:
@@ -48,19 +53,24 @@
 
 
 # define function as compare_expenses_to_budget()
+def compare_expenses_to_budget(data):
+    with open("data.csv", "r+") as data:
+        # for each category:
+        for spending in data:    
+            # compare actual spending vs budget limit
+            spending = 0
+            limit = 0
+            # if spending > limit:
+            if spending > limit:
+        # di    splay warning:
+                print("WARNING")
+                # "You went over budget in [category]"                
+                print(f"You are over budget in {file}")
 
-    # get actual expenses from Edwing's tracking system
 
-    # for each category:
-        # compare actual spending vs budget limit
-
-        # if spending > limit:
-            # display warning:
-                # "You went over budget in [category]"
-
-        # else:
-            # display:
-                # "You are within budget for [category]"
+            #else:
+                #display:
+                    #"You are within budget for [category]"
 
     # calculate total remaining money:
         # income - total expenses
@@ -73,9 +83,8 @@
 
 
 # define function as savings_goal_tracker()
-
+def savings_goals_tracker(data):
     # while user does not exit:
-
         # ask user:
             # "What is your savings goal amount?"
 
