@@ -26,16 +26,33 @@
         #else if user choice is 3 then tell the user to select again, continue 
             
             #display thanks for using the FINANCE CALCULATOR PROGRAM
-import budgeting_and_savings_goal,helper,login_logout,program_stucture,utill_functions,random_password_generator
+import budgeting_and_savings_goal, helper, login_logout, utill_functions, random_password_generator
 def main():
     data=utill_functions.csv_file("data.csv")
-    if not(login_logout.login(data)):
+    username,password=login_logout.login(data)
+    if not(username):
         return
     while True:
         choise=utill_functions.get_valid_type(int,"0 to log out\n1 to see stats\n2 to change stats",valid=(0,2))
         if choise==0:
             return
         if choise==1:
+            for x in data:
+                if x["username"]==username and password==x["password"]:
+                    totalcost=0
+                    formating={}
+                    print(f"username:{x["username"]}\npassword:{x["password"]}\nincome:{x["income"]}\nsavings:{x["savings"]}")
+                    expens=utill_functions.csv_file.from_underscore(x["expenses_name"])
+                    mount=utill_functions.csv_file.from_underscore(x["expenses_amount"])
+                    budg=utill_functions.csv_file.from_underscore(x["budget_expense"])
+                    for num,x in enumerate(expens):
+                        print(f"expense name: {x} amount: ${mount[num]} budget: ${budg[num]}")
+                        totalcost+=int(mount[num])
+                    for num,x in enumerate(expens):    
+                        percentage = (int(mount[num]) / int(totalcost)) * 100 if int(totalcost) > 0 else 0
+                        formating[x]=[percentage,int(mount[num]),[int(mount[num]),int(budg[num])]]
+                    utill_functions.parse_turtle_data()
+            
             
 if __name__=="__main__":
     main()
