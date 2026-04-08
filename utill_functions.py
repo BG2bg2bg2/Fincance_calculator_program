@@ -72,7 +72,14 @@ class csv_file:
             except Exception as e:
                 print(f"An error occurred: {e}")
             self.sync()
-
+    def to_list(data):
+        for num,x in enumerate(data):
+            data[num]=str(x)
+        return "_".join(data)
+    def from_underscore(data):
+        return data.spit("_")
+    def to_dict(self):
+        return self.rows
 def type_text(text, end="\n", typing=True, random_bounds=(0, .1)):
     """Print text optionally with a typing effect."""
     try:
@@ -540,3 +547,26 @@ class threads:
             return self.input_thread
         except Exception as e:
             raise RuntimeError("error 013 occurred in threads.input_thread_setup") from e
+        
+
+
+"""
+go
+y
+n
+3
+y
+135
+y
+bob
+42
+35
+y
+joe
+340
+612
+y
+0
+64973
+y
+"""

@@ -31,7 +31,11 @@ def main():
     data=utill_functions.csv_file("data.csv")
     if not(login_logout.login(data)):
         return
-    
-    pass
+    while True:
+        choise=utill_functions.get_valid_type(int,"0 to log out\n1 to see stats\n2 to change stats",valid=(0,2))
+        if choise==0:
+            return
+        if choise==1:
+            
 if __name__=="__main__":
     main()

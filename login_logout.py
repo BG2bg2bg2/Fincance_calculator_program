@@ -11,31 +11,27 @@ def login(data):
         chose = utill_functions.get_valid_type(int,"0 to exit\n1 to to login\n2 to to make an account\nwhat do you want: ",valid=(0,2))
           
         #if choice is to exit break and go to the main funtion   
-        if chose == "0":
+        if chose == 0:
             return False
         #else if choice is to login
-        elif chose == "1":
+        elif chose == 1:
             #make username match to an input asking for the username
             user = utill_functions.get_valid_type(str,"Enter your username: ")
+            passw=utill_functions.get_valid_type(str,"what is your password: ")
             #open the filepath and read it as file 
-            if user in data:
-                #make csv_reader be a csv reader to the file
-                #header be next the csv reader
-                headers = next(data) 
-                #make rows be list csv reader
-                rows = []
+            if data["username"]==user and passw==data["password"]:
+                print("hasa")
 
             #make user found false
             else:
             #make a loop in row 
-                while True:
-                    datas = "hi"
+                print("no acount with that name and password")
                 #if there is not in row return 
                 #if there is a account make user found true
 
             #call the funtion for gov to handle his part 
         #else if choice of the user create an account
-        elif chose == "2":
+        elif chose == 2:
             while True:
                 username=utill_functions.get_valid_type(str,"what is your username: ")
                 if utill_functions.get_valid_type(str,f"do you want {username} to be your username (this canot be changed later)(y/n): ",valid=["y",'n'])=="y":
@@ -54,6 +50,7 @@ def login(data):
                     break
             expenses=[]
             amounts=[]
+            budgets=[]
             count=0
             while True:
                 count+=1
@@ -65,20 +62,17 @@ def login(data):
                         print("you cant have 0 expenses")
                         continue
                 amount=utill_functions.get_valid_type(int,f"what is the cost of {expence}: ")
-                if utill_functions.get_valid_type(str,f"do you want to add {expence}:{amount}(y/n): ",valid=["y","n"])=="y":
+                budget=utill_functions.get_valid_type(int,f"what is your budget for {expence}: ")
+                if utill_functions.get_valid_type(str,f"do you want to add {expence}:{amount}:{budget}(y/n): ",valid=["y","n"])=="y":
                     expenses.append(expence)
                     amounts.append(amount)
+                    budgets.append(budget)
             while True:
-                income=utill_functions.get_valid_type(int,"how much is in your savings: ",valid=(0,100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100**100))
-                if utill_functions.get_valid_type(str,f"is ${income} your hourly wage (y/n): ",valid=["y",'n'])=="y":
+                savings=utill_functions.get_valid_type(int,"how much is in your savings: ",valid=(0,100**100))
+                if utill_functions.get_valid_type(str,f"is ${savings} your savings(y/n): ",valid=["y",'n'])=="y":
                     break
-            while True:
-                income=utill_functions.get_valid_type(int,"what is your hourly income: ",valid=(0,10000000000))
-                if utill_functions.get_valid_type(str,f"is ${income} your hourly wage (y/n): ",valid=["y",'n'])=="y":
-                    break
-            data.add([username,password])
-            utill_functions.csv_file
-
+            data.add([username,password,income,utill_functions.csv_file.to_list(expenses),utill_functions.csv_file.to_list(amounts),utill_functions.csv_file.to_list(budgets),savings])
+            return 
 
             #make a input asking the user for a name 
             #ask the user if they want to type their own password 
@@ -91,3 +85,4 @@ def login(data):
 
 
 
+login(data=utill_functions.csv_file("data.csv"))
