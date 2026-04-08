@@ -18,9 +18,10 @@ import select
 # -------------------------
 import math
 import turtle
-math
+
 #make converson base funciton with perams of og base new base and number
 wn = turtle.Screen()
+turtle.colormode(255) 
 wn.tracer(0) 
 def convert_base(origonal_base,new_base,number):
     if type(number)!=list:
@@ -57,7 +58,7 @@ def parse_turtle_data(expenses):
             rgb.insert(0, 0)
         colors.append(tuple(rgb[:3]))      
     pie_chart(percentages, colors, names, 100, 0, (-300, 0), 100, 20)
-    graph(spending_over_time, (-300, -200), 150, colors)
+    graph(spending_over_time, (-300, -200), 150,10, colors)
 def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
     fred=turtle.Turtle()
     fred.speed(0)
@@ -191,6 +192,16 @@ class csv_file:
         return data.split("_")
     def to_dict(self):
         return self.rows
+    def update_data(self,username,updated_row):
+        for x,row in enumerate(self.rows):
+            if row['username'] == username:
+                self.rows[x] = updated_row
+                break
+        with open(self.path_to_csv, mode="w", newline='\n') as file:
+            writer = csv.DictWriter(file, fieldnames=self.headers)
+            writer.writeheader()
+            writer.writerows(self.rows)
+        self.sync()
 def type_text(text, end="\n", typing=True, random_bounds=(0, .1)):
     """Print text optionally with a typing effect."""
     try:

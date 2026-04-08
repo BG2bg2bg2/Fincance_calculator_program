@@ -34,8 +34,12 @@ def login(data):
         elif chose == 2:
             while True:
                 #make a input asking the user for a name 
-                username=utill_functions.get_valid_type(str,"what is your username: ")
+                "".replace(",","")
+                username=utill_functions.get_valid_type(str,"what is your username: ").replace(",","").replace('"',"").replace("`","").replace("_","")
                 if utill_functions.get_valid_type(str,f"do you want {username} to be your username (this canot be changed later)(y/n): ",valid=["y",'n'])=="y":
+                    for x in data:
+                        if x["username"]==username:
+                            print("this username is already taken")
                     break
             #ask the user if they want to type their own password 
             if utill_functions.get_valid_type(str,"do you want a random password(y/n): ",valid=["y","n"])=="y":
@@ -60,7 +64,7 @@ def login(data):
             count=0
             while True:
                 count+=1
-                expence=utill_functions.get_valid_type(str,f"what is the name of your #{count} expence(0 to stop adding more): ")
+                expence=utill_functions.get_valid_type(str,f"what is the name of your #{count} expence(0 to stop adding more): ").replace(",","").replace('"',"").replace("`","").replace("_","")
                 if expence=="0":
                     if len(expenses)>0:
                         break
