@@ -50,7 +50,8 @@ def parse_turtle_data(expenses):
     percentages = [val[0] for val in expenses.values()]
     spending_over_time = [val[2] for val in expenses.values()]
     colors = []
-    jump_value = 16777215 // len(expenses)
+    if expenses:
+        jump_value = 16777215 // len(expenses)
     for i in range(len(expenses)):
         unique_num = (i * jump_value + 12345) % 16777215
         rgb = convert_base(10, 255, unique_num)
@@ -58,7 +59,9 @@ def parse_turtle_data(expenses):
             rgb.insert(0, 0)
         colors.append(tuple(rgb[:3]))      
     pie_chart(percentages, colors, names, 100, 0, (-300, 0), 100, 20)
-    graph(spending_over_time, (-300, -200), 150,10, colors)
+    if expenses:
+        graph(spending_over_time, (-300, -200), 150,10, colors)
+    wn.update() 
 def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
     fred=turtle.Turtle()
     fred.speed(0)
@@ -76,7 +79,7 @@ def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offse
         fred.color(list_of_collors[num])
         fred.begin_fill()
         fred.pendown()
-        fred.circle(size,(x*3.6))
+        fred.circle(size,(x*3.94))
         last_x=fred.xcor()
         last_y=fred.ycor()
         fred.goto(x_offset,y_offset+size)
@@ -87,6 +90,9 @@ def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offse
     fred.write("key:",font=("Arial",int(key_size*1.3),"normal"))
     fred.goto(key_offset)
     for num,x in enumerate(list_of_names):
+        fred.penup()
+        fred.goto(key_offset[0],key_offset[1]-num*40)
+        fred.setheading(0)
         fred.pendown()
         fred.begin_fill()
         fred.color(list_of_collors[num])
@@ -118,15 +124,18 @@ def graph(objs,graph_offset,graph_size,intensaty,list_of_collors):
     joe.forward(graph_size*1.5)
     joe.goto(graph_offset)
     joe.pensize(3)
+    max_val = max(max(dataset) for dataset in objs)
+    if max_val == 0: max_val = 1 
+    y_scale = graph_size / max_val
+    intensity = (graph_size * 1.5) / (len(objs[0]) - 1)
     for num1,x in enumerate(objs):
         joe.penup()
         joe.goto(graph_offset)
         joe.color(list_of_collors[num1])
         for num2,y in enumerate(x):
             if num2==1:
-                joe.pendown()
-            intensaty=graph_size*1.5/len(objs[0])
-            joe.goto(graph_offset[0]+num2*intensaty,graph_offset[1]+y)
+                joe.pendown() 
+            joe.goto(graph_offset[0] + (num2 * intensity), graph_offset[1] + (y * y_scale))
     wn.update()
 import csv
 class csv_file:
