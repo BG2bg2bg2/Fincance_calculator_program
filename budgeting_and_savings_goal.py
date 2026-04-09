@@ -47,7 +47,7 @@ def add_budget_categories(data):
             max = utill_functions.get_valid_type(int, f"Here are your categories: {budget_categories} \nWhat is the max amount of money you'll spend on each category? (enter one category's amount then enter, and continue until all categories are satisfied): ", invalid_prompt = 0)
             budget_category_maxes.append(max)
             
-def create_budget_plan(data):
+def create_budget_plan(data,spendings):
     choice = input("Do you want to make a budget plan? (y/n): ").lower
 
     # get user's incomepass    income = utill_functions.get_valid_type(float,"Enter how much money you have right now: ")
@@ -175,7 +175,7 @@ def intrest_calculation(data, savings):
         # if user types exit:
             # break loop
             
-def BG_main(username, password):
+def BG_main(username, password,data):
     print("Welcome to the Budgeting/Savings Goal sector.")
 
     choice = utill_functions.get_valid_type(int,"0 Go back to main men\n1 to set budget limits\n2 to Compare expenses to budget\n3 to Savings goal tracker\nWhat do you want: ",valid=(0,4))
@@ -185,10 +185,7 @@ def BG_main(username, password):
         create_budget_plan()
     elif choice == "2":
         compare_expenses_to_budget(data)
-        view_budget_plan()
     elif choice == "3":
-        expence_v_budget()
-    elif choice == "4":
         savings_goals_tracker()
     else:
         print("Must enter a valid choice")
