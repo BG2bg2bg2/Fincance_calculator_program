@@ -12,16 +12,15 @@ import shutil
 import queue
 import sys
 import select
-
+import csv
 # -------------------------
 # Input / typing utilities
 # -------------------------
 import math
 import turtle
-
+math
 #make converson base funciton with perams of og base new base and number
 wn = turtle.Screen()
-turtle.colormode(255) 
 wn.tracer(0) 
 def convert_base(origonal_base,new_base,number):
     if type(number)!=list:
@@ -45,23 +44,28 @@ def convert_base(origonal_base,new_base,number):
             nout=f"{nout}{x}"
         return int(nout)
     return out
+#define turtle data parsing with expensas as the peramater
 def parse_turtle_data(expenses):
-    names = list(expenses.keys())
-    percentages = [val[0] for val in expenses.values()]
-    spending_over_time = [val[2] for val in expenses.values()]
-    colors = []
-    if expenses:
-        jump_value = 16777215 // len(expenses)
-    for i in range(len(expenses)):
-        unique_num = (i * jump_value + 12345) % 16777215
-        rgb = convert_base(10, 255, unique_num)
-        while len(rgb) < 3:
-            rgb.insert(0, 0)
-        colors.append(tuple(rgb[:3]))      
-    pie_chart(percentages, colors, names, 100, 0, (-300, 0), 100, 20)
-    if expenses:
-        graph(spending_over_time, (-300, -200), 150,10, colors)
-    wn.update() 
+    names=[]
+    persentages=[]
+    amounts=[]
+    spending_over_time=[]
+    #get each key and valeu and add them to the corosponding lists then call the corospomnding functions
+    for key,val in expenses.items():
+        names.append(key)
+        persentages.append(val[0])
+        amounts.append(key[1])
+        spending=[]
+        for x in key[2]:
+            spending.append(x)
+        spending_over_time.append[spending]
+    base_val=55664661/len(expenses)
+    collors=[]
+    for x in range(len(expenses)):
+        collors.append(convert_base(10,255,int(base_val*x)))
+    convert_base()
+    pie_chart(persentages,collors,names,100,100,(-40,-40),100,30)
+    graph(spending_over_time,(-500,100),100,10)
 def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
     fred=turtle.Turtle()
     fred.speed(0)
@@ -79,7 +83,7 @@ def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offse
         fred.color(list_of_collors[num])
         fred.begin_fill()
         fred.pendown()
-        fred.circle(size,(x*3.94))
+        fred.circle(size,(x*3.6))
         last_x=fred.xcor()
         last_y=fred.ycor()
         fred.goto(x_offset,y_offset+size)
@@ -90,9 +94,6 @@ def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offse
     fred.write("key:",font=("Arial",int(key_size*1.3),"normal"))
     fred.goto(key_offset)
     for num,x in enumerate(list_of_names):
-        fred.penup()
-        fred.goto(key_offset[0],key_offset[1]-num*40)
-        fred.setheading(0)
         fred.pendown()
         fred.begin_fill()
         fred.color(list_of_collors[num])
@@ -124,20 +125,19 @@ def graph(objs,graph_offset,graph_size,intensaty,list_of_collors):
     joe.forward(graph_size*1.5)
     joe.goto(graph_offset)
     joe.pensize(3)
-    max_val = max(max(dataset) for dataset in objs)
-    if max_val == 0: max_val = 1 
-    y_scale = graph_size / max_val
-    intensity = (graph_size * 1.5) / (len(objs[0]) - 1)
     for num1,x in enumerate(objs):
         joe.penup()
         joe.goto(graph_offset)
         joe.color(list_of_collors[num1])
         for num2,y in enumerate(x):
             if num2==1:
-                joe.pendown() 
-            joe.goto(graph_offset[0] + (num2 * intensity), graph_offset[1] + (y * y_scale))
+                joe.pendown()
+            intensaty=graph_size*1.5/len(objs[0])
+            joe.goto(graph_offset[0]+num2*intensaty,graph_offset[1]+y)
     wn.update()
-import csv
+
+
+
 class csv_file:
     def __init__(self,path_to_csv):
         self.path_to_csv=path_to_csv
@@ -156,6 +156,8 @@ class csv_file:
             print(f"An error occurred: {e}")
     def __getitem__(self,index):
         return self.rows[index]
+    def __iter__(self):
+        return iter(self.rows)
     def __str__(self):
         output=""
         for row in self.rows:
@@ -193,24 +195,7 @@ class csv_file:
             except Exception as e:
                 print(f"An error occurred: {e}")
             self.sync()
-    def to_list(data):
-        for num,x in enumerate(data):
-            data[num]=str(x)
-        return "_".join(data)
-    def from_underscore(data):
-        return data.split("_")
-    def to_dict(self):
-        return self.rows
-    def update_data(self,username,updated_row):
-        for x,row in enumerate(self.rows):
-            if row['username'] == username:
-                self.rows[x] = updated_row
-                break
-        with open(self.path_to_csv, mode="w", newline='\n') as file:
-            writer = csv.DictWriter(file, fieldnames=self.headers)
-            writer.writeheader()
-            writer.writerows(self.rows)
-        self.sync()
+
 def type_text(text, end="\n", typing=True, random_bounds=(0, .1)):
     """Print text optionally with a typing effect."""
     try:
@@ -678,26 +663,3 @@ class threads:
             return self.input_thread
         except Exception as e:
             raise RuntimeError("error 013 occurred in threads.input_thread_setup") from e
-        
-
-
-"""
-go
-y
-n
-3
-y
-135
-y
-bob
-42
-35
-y
-joe
-340
-612
-y
-0
-64973
-y
-"""
