@@ -16,6 +16,127 @@ import select
 # -------------------------
 # Input / typing utilities
 # -------------------------
+import math
+import turtle
+
+#make converson base funciton with perams of og base new base and number
+wn = turtle.Screen()
+turtle.colormode(255) 
+wn.tracer(0) 
+def convert_base(origonal_base,new_base,number):
+    if type(number)!=list:
+        for num,x in enumerate(str(number)):
+            if num==0:
+                number=[]
+            number.append(int(x))
+    number_convertion=0
+    #reapete the amoutn in number and multiply the var number conversion with origonal base and add the digit of the number
+    for digit in number:
+        number_convertion=number_convertion*origonal_base+digit
+    out=[]
+    #while that number is not 0 add thta number modulo to a list and flor deveide it by the newa baes
+    while number_convertion>0:
+        out.append(number_convertion%new_base)
+        number_convertion//=new_base
+    #if the newa base is 10 reapet the length of the output and cpncatonate it all and return it as a intager otherwise just return it
+    if new_base==10:
+        nout=""
+        for x in out:
+            nout=f"{nout}{x}"
+        return int(nout)
+    return out
+def parse_turtle_data(expenses):
+    names = list(expenses.keys())
+    percentages = [val[0] for val in expenses.values()]
+    spending_over_time = [val[2] for val in expenses.values()]
+    colors = []
+    if expenses:
+        jump_value = 16777215 // len(expenses)
+    for i in range(len(expenses)):
+        unique_num = (i * jump_value + 12345) % 16777215
+        rgb = convert_base(10, 255, unique_num)
+        while len(rgb) < 3:
+            rgb.insert(0, 0)
+        colors.append(tuple(rgb[:3]))      
+    pie_chart(percentages, colors, names, 100, 0, (-300, 0), 100, 20)
+    if expenses:
+        graph(spending_over_time, (-300, -200), 150,10, colors)
+    wn.update() 
+def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
+    fred=turtle.Turtle()
+    fred.speed(0)
+    fred.penup()
+    fred.goto(x_offset,y_offset)
+    fred.pendown()
+    fred.circle(size)
+    fred.goto(x_offset,y_offset+size)
+    last_x=x_offset
+    last_y=y_offset
+    for num,x in enumerate(list_of_persentages):
+        fred.penup()
+        fred.goto(last_x,last_y)
+        fred.pendown()
+        fred.color(list_of_collors[num])
+        fred.begin_fill()
+        fred.pendown()
+        fred.circle(size,(x*3.94))
+        last_x=fred.xcor()
+        last_y=fred.ycor()
+        fred.goto(x_offset,y_offset+size)
+        fred.end_fill()
+    fred.penup()
+    fred.goto(key_offset[0],key_offset[1]+50)
+    fred.color("black")
+    fred.write("key:",font=("Arial",int(key_size*1.3),"normal"))
+    fred.goto(key_offset)
+    for num,x in enumerate(list_of_names):
+        fred.penup()
+        fred.goto(key_offset[0],key_offset[1]-num*40)
+        fred.setheading(0)
+        fred.pendown()
+        fred.begin_fill()
+        fred.color(list_of_collors[num])
+        fred.right(90)
+        fred.forward(key_size)
+        fred.right(90)
+        fred.forward(key_size)
+        fred.right(90)
+        fred.forward(key_size)
+        fred.right(90)
+        fred.forward(key_size)
+        fred.end_fill()
+        fred.penup()
+        fred.goto(key_offset[0]+key_size/.8,key_offset[1]-key_size/.9-num*40)
+        fred.color("black")
+        fred.write(x,align="left",font=("Arial",key_size,"normal"))
+        fred.goto(key_offset[0],key_offset[1]-num*40)
+    wn.update()
+def graph(objs,graph_offset,graph_size,intensaty,list_of_collors):
+    joe=turtle.Turtle()
+    joe.penup()
+    joe.speed(0)
+    joe.goto(graph_offset)
+    joe.left(90)
+    joe.pendown()
+    joe.forward(graph_size)
+    joe.backward(graph_size)
+    joe.right(90)
+    joe.forward(graph_size*1.5)
+    joe.goto(graph_offset)
+    joe.pensize(3)
+    max_val = max(max(dataset) for dataset in objs)
+    if max_val == 0: max_val = 1 
+    y_scale = graph_size / max_val
+    intensity = (graph_size * 1.5) / (len(objs[0]) - 1)
+    for num1,x in enumerate(objs):
+        joe.penup()
+        joe.goto(graph_offset)
+        joe.color(list_of_collors[num1])
+        for num2,y in enumerate(x):
+            if num2==1:
+                joe.pendown() 
+            joe.goto(graph_offset[0] + (num2 * intensity), graph_offset[1] + (y * y_scale))
+    wn.update()
 import csv
 class csv_file:
     def __init__(self,path_to_csv):
@@ -72,7 +193,24 @@ class csv_file:
             except Exception as e:
                 print(f"An error occurred: {e}")
             self.sync()
-
+    def to_list(data):
+        for num,x in enumerate(data):
+            data[num]=str(x)
+        return "_".join(data)
+    def from_underscore(data):
+        return data.split("_")
+    def to_dict(self):
+        return self.rows
+    def update_data(self,username,updated_row):
+        for x,row in enumerate(self.rows):
+            if row['username'] == username:
+                self.rows[x] = updated_row
+                break
+        with open(self.path_to_csv, mode="w", newline='\n') as file:
+            writer = csv.DictWriter(file, fieldnames=self.headers)
+            writer.writeheader()
+            writer.writerows(self.rows)
+        self.sync()
 def type_text(text, end="\n", typing=True, random_bounds=(0, .1)):
     """Print text optionally with a typing effect."""
     try:
@@ -540,3 +678,26 @@ class threads:
             return self.input_thread
         except Exception as e:
             raise RuntimeError("error 013 occurred in threads.input_thread_setup") from e
+        
+
+
+"""
+go
+y
+n
+3
+y
+135
+y
+bob
+42
+35
+y
+joe
+340
+612
+y
+0
+64973
+y
+"""

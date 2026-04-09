@@ -1,1 +1,2 @@
-username,password,income,expenses_name,expenses_amount,savings,budget
+username,password,income,expenses_name,expenses_amount,budget_expense,savings,savings_over_time
+bob,<>,490,thingi_joe_thing,943_94532_493_9356,6923_632943_7392,93463,63_35321
