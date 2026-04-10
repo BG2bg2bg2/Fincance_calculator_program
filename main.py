@@ -26,8 +26,14 @@
         #else if user choice is 3 then tell the user to select again, continue 
             
             #display thanks for using the FINANCE CALCULATOR PROGRAM
-import budgeting_and_savings_goal, helper, login_logout, utill_functions, random_password_generator
-def main():
+import budgeting_and_savings_goal, helper, login_logout, utill_functions, random_password_generator,gui
+import tkinter as tk
+
+
+#everything we want to happen in here
+
+#this keeps it on the screen 
+def main(gooy):
     data=utill_functions.csv_file("data.csv")
     username,password=login_logout.login(data)
     if not(username):
@@ -214,4 +220,6 @@ def main():
                         
                         
 if __name__=="__main__":
-    main()
+    gooy=gui.gui_manager(title="financial manager")
+    main(gooy)
+    gooy.root.mainloop()

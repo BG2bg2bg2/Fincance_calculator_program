@@ -81,7 +81,7 @@ def login(data):
                 savings=utill_functions.get_valid_type(int,"how much is in your savings: ",valid=(0,100**100))
                 if utill_functions.get_valid_type(str,f"is ${savings} your savings(y/n): ",valid=["y",'n'])=="y":
                     break
-            data.add([username,password,income,utill_functions.csv_file.to_list(expenses),utill_functions.csv_file.to_list(amounts),utill_functions.csv_file.to_list(budgets),savings])
+            data.add([username,password,income,utill_functions.csv_file.to_list(expenses),utill_functions.csv_file.to_list(amounts),utill_functions.csv_file.to_list(budgets),savings,0])
             continue
 
 
