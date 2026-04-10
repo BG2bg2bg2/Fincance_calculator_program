@@ -63,7 +63,7 @@ def parse_turtle_data(expenses):
     collors=[]
     for x in range(len(expenses)):
         collors.append(convert_base(10,255,int(base_val*x)))
-    convert_base
+    convert_base()
     pie_chart(persentages,collors,names,100,100,(-40,-40),100,30)
     graph(spending_over_time,(-500,100),100,10)
 def pie_chart(list_of_persentages,list_of_collors,list_of_names,x_offset,y_offset,key_offset,size,key_size):
