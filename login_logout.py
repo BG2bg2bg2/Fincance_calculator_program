@@ -12,7 +12,8 @@ class login_logout(tk.Frame):
         super().__init__(gui_manager)
         self.manager=manager
         self.user_data=user_data
-        tk.Button(self,text="make acount",command=lambda: manager.show_screen("make_acount")).pack()
+    def refresh(self):
+        tk.Button(self,text="make acount",command=lambda: self.manager.show_screen("make_acount")).pack()
         tk.Button(self,text="quit",command=quit).pack()
         tk.Label(self,text="username",font=("Arial",5)).pack()
         self.username=tk.Entry(self)
@@ -24,12 +25,10 @@ class login_logout(tk.Frame):
     def validate(self):
         user=self.username.get()
         passw=self.password.get()
-        
         found=False
         for x in self.user_data:
             if x["username"] == user and x["password"] == passw:
-                self.manager.user=user
-                self.manager.password=passw
+                self.manager.change_vars(user,passw)
                 self.manager.show_screen("main_menu")
                 found=True
                 break
@@ -41,7 +40,8 @@ class make_acount(tk.Frame):
         self.manager=manager
         self.user_data=user_data
         self.expenses,self.amounts,self.budgets=[],[],[]
-        tk.Button(self,text="Go Back",command=lambda: manager.show_screen("login_logout")).pack(anchor="w")
+    def refresh(self):
+        tk.Button(self,text="Go Back",command=lambda: self.manager.show_screen("login_logout")).pack(anchor="w")
         
         tk.Label(self,text="Username").pack()
         self.username=tk.Entry(self)
@@ -52,11 +52,11 @@ class make_acount(tk.Frame):
         self.password.pack()
 
         tk.Label(self,text="Hourly Income").pack()
-        self.income=tk.Entry(self,validate='key',validatecommand=manager.valid_int)
+        self.income=tk.Entry(self,validate='key',validatecommand=self.manager.valid_int)
         self.income.pack()
 
         tk.Label(self,text="Savings").pack()
-        self.savings=tk.Entry(self,validate='key',validatecommand=manager.valid_int)
+        self.savings=tk.Entry(self,validate='key',validatecommand=self.manager.valid_int)
         self.savings.pack()
 
         tk.Label(self,text="Add Expenses",font=("Arial",10,"bold")).pack(pady=5)
@@ -64,22 +64,21 @@ class make_acount(tk.Frame):
         exp_frame.pack()
         
         tk.Label(exp_frame,text="Name").grid(row=0,column=0)
-        self.exp_name=tk.Entry(exp_frame,width=10)
+        self.exp_name=tk.Entry(exp_frame,width=10,validate='key',validatecommand=self.manager.valid_int)
         self.exp_name.grid(row=1,column=0)
 
         tk.Label(exp_frame,text="Cost").grid(row=0,column=1)
-        self.exp_cost=tk.Entry(exp_frame,width=8)
+        self.exp_cost=tk.Entry(exp_frame,width=8,validate='key',validatecommand=self.manager.valid_int)
         self.exp_cost.grid(row=1,column=1)
 
         tk.Label(exp_frame,text="Budget").grid(row=0,column=2)
-        self.exp_budget=tk.Entry(exp_frame,width=8)
+        self.exp_budget=tk.Entry(exp_frame,width=8,validate='key',validatecommand=self.manager.valid_int)
         self.exp_budget.grid(row=1,column=2)
 
         tk.Button(self,text="Add Expense",command=self.add_expense_to_list).pack(pady=5)
         self.expense_listbox=tk.Listbox(self,height=4)
         self.expense_listbox.pack(fill="x",padx=20)
-        tk.Button(self,text="CREATE ACCOUNT",bg="green",fg="white",
-                  command=self.create_user).pack(pady=20)
+        tk.Button(self,text="CREATE ACCOUNT",bg="green",command=self.create_user).pack(pady=20)
     def add_expense_to_list(self):
         name=self.exp_name.get().strip().replace(",","")
         cost=self.exp_cost.get()

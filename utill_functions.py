@@ -12,13 +12,43 @@ import shutil
 import queue
 import sys
 import select
-
+import inspect
+#credit for this function is wjandrea and juan Isaza from stack overflow here is the source: https://stackoverflow.com/questions/18425225/getting-the-name-of-a-variable-as-a-string?page=1&tab=scoredesc#tab-top:~:text=14%20more%20comments-,56,On,-python3%2C%20this%20function
+def retrieve_name(var):
+    """
+    Gets the name of var. Does it from the out most frame inner-wards.
+    :param var: variable to get name from.
+    :return: string
+    """
+    for fi in reversed(inspect.stack()):
+        names = [var_name for var_name, var_val in fi.frame.f_locals.items() if var_val is var]
+        if len(names) > 0:
+            return names[0]
 # -------------------------
 # Input / typing utilities
 # -------------------------
+def debug(*variables,title="None"):
+    # 1. Get the caller's line number
+    line = inspect.currentframe().f_back.f_lineno
+    title if title else ""
+    print(f"--- {title if title else f"DEBUG: as of line {line}"} ---")
+    for x in variables:
+        name = retrieve_name(x)
+        v_type = type(x).__name__
+        v_size = sys.getsizeof(x)
+        v_id = id(x)
+        v_dict = getattr(x, '__dict__','N/A')
+        v_doc = str(getattr(x, '__doc__','N/A')).strip().split('\n')[0]
+        v_methods = [m for m in dir(x) if not m.startswith('_')][:5]
+        print(f"------ VARIABLE NAME: {name}")
+        print(f"Value: {x} | Type: {v_type}")
+        print(f"Size: {v_size} bytes | ID: {v_id}")
+        print(f"Doc: {v_doc}")
+        print(f"Dict: {v_dict}")
+        print(f"Methods: {v_methods}")
+        print("-" * 30)
 import math
 import turtle
-
 #make converson base funciton with perams of og base new base and number
 import turtle
 wn=turtle.Screen()

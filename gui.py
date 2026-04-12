@@ -1,8 +1,12 @@
 import tkinter as tk
+from tkinter import messagebox
 import utill_functions
 #import all the menus as themselfs
-class GUIManager(tk.Tk):
+from login_logout import make_acount,login_logout
+from main import see_stats,change_savings,change_stats,main_menu,change_expenses
+class gui_manager(tk.Tk):
     def __init__(self,data):
+        self.data=data
         super().__init__()
         self.data=data
         self.title("Finance manager")
@@ -17,15 +21,28 @@ class GUIManager(tk.Tk):
         self.user=""
         self.password="" 
         self.frames={}
-        for x in (MainMenu,StatsPage): #put all the menus here
+        for x in (main_menu,login_logout,make_acount,see_stats,change_savings,change_stats,change_expenses): #put all the menus here
             page_name=x.__name__.replace("Page","")
-            frame=x(parent=container,controller=self)
+            frame=x(gui_manager=container,manager=self,user_data=self.data)
             self.frames[page_name]=frame
             frame.grid(row=0,column=0,sticky="nsew")
-        self.show_screen("Menu")
+        self.show_screen("login_logout")
     def show_screen(self,page_name):
+        if page_name not in self.frames:
+            messagebox.showerror("Error", f"There is no window named: {page_name}")
+            return
+        for x in self.frames.values():
+            x.pack_forget()
         frame=self.frames[page_name]
+        for x in frame.winfo_children():
+            x.destroy()
+        if hasattr(frame, "refresh"):
+            frame.refresh()
         frame.tkraise()
+        
+    def change_vars(self,user,password):
+        self.user=user
+        self.password=password
     def int_input(self,P):
         if P.isdigit():
             return True
@@ -54,12 +71,7 @@ class GUIManager(tk.Tk):
             return True
         except:
             return False
-class MainMenu(tk.Frame):
-    def __init__(self,gui_manager,manager):
-        super().__init__(gui_manager)
-        tk.Label(self,text="Main Menu").pack()
-        tk.Button(self,text="View Stats",
-                  command=lambda: manager.show_screen("Stats")).pack()
+
 
 if __name__=="__main__":
     data=utill_functions.csv_file("data.csv")
