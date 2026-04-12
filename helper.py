@@ -20,7 +20,7 @@ import math
 import turtle
 math
 #make converson base funciton with perams of og base new base and number
-wn = turtle.Screen()
+wn=turtle.Screen()
 wn.tracer(0) 
 def convert_base(origonal_base,new_base,number):
     if type(number)!=list:
@@ -144,7 +144,7 @@ class csv_file:
         self.sync()
     def sync(self):
         try:
-            with open(self.path_to_csv, mode="r") as file:
+            with open(self.path_to_csv,mode="r") as file:
                 reader=csv.DictReader(file)
                 self.headers=[]
                 self.headers=reader.fieldnames
@@ -196,25 +196,25 @@ class csv_file:
                 print(f"An error occurred: {e}")
             self.sync()
 
-def type_text(text, end="\n", typing=True, random_bounds=(0, .1)):
+def type_text(text,end="\n",typing=True,random_bounds=(0,.1)):
     """Print text optionally with a typing effect."""
     try:
         if not typing:
-            print(text, end=end)
+            print(text,end=end)
             return
         for ch in text:
             time.sleep(random.uniform(*random_bounds))
-            print(ch, end="", flush=True)
-        print("", end=end)
+            print(ch,end="",flush=True)
+        print("",end=end)
     except Exception as e:
         raise RuntimeError("error 003 occurred in type_text") from e
 
 def clear_term():
     """Clear the terminal screen."""
     try:
-        if os.name == 'nt':
+        if os.name=='nt':
             os.system('cls')
-        elif os.name == 'posix':
+        elif os.name=='posix':
             os.system('clear')
         else:
             print("\n" * 500)
@@ -226,9 +226,9 @@ def debugger(func):
         func()
         print(f"affter func{func.__name__}")
     return before_and_after
-def menu(options, descriptions, prompt="Select an option: "):
+def menu(options,descriptions,prompt="Select an option: "):
     """
-    Displays a menu of options, prompts the user for a selection, and executes
+    Displays a menu of options,prompts the user for a selection,and executes
     the corresponding function.
 
     Parameters:
@@ -246,21 +246,21 @@ def menu(options, descriptions, prompt="Select an option: "):
     """
     while True:
         print("\nPlease choose an option:")
-        for idx, desc in enumerate(descriptions):
+        for idx,desc in enumerate(descriptions):
             print(f"{idx + 1}. {desc}")
         print("0. Quit")
-        choice = get_valid_type(int, prompt, valid=(0, len(options)))
-        if choice == 0:
+        choice=get_valid_type(int,prompt,valid=(0,len(options)))
+        if choice==0:
             break
         else:
             options[choice - 1]()
 
-def get_valid_type(type_return: type, prompt, invalid_prompt="Invalid input. Please try again.",valid=None, typing=False, end="", type_speed=False, random_bounds=(0, .1),min_max=None):
+def get_valid_type(type_return: type,prompt,invalid_prompt="Invalid input. Please try again.",valid=None,typing=False,end="",type_speed=False,random_bounds=(0,.1),min_max=None):
     """
     Prompt the user until they provide a value that can be converted to type_return
     and (optionally) is within valid constraints.
-    - valid can be None, a tuple (min, max) or a list of allowed values.
-    - If typing=True, the prompt is shown via type_text and input() is read on the next line.
+    - valid can be None,a tuple (min,max) or a list of allowed values.
+    - If typing=True,the prompt is shown via type_text and input() is read on the next line.
     Returns the converted value.
     Raises ValueError on repeated invalid input if interrupted by KeyboardInterrupt.
     """
@@ -268,38 +268,38 @@ def get_valid_type(type_return: type, prompt, invalid_prompt="Invalid input. Ple
         while True:
             try:
                 if typing:
-                    type_text(prompt, end="", typing=True, random_bounds=random_bounds)
-                    raw = input()
+                    type_text(prompt,end="",typing=True,random_bounds=random_bounds)
+                    raw=input()
                 else:
-                    raw = input(prompt)
-                to_return = type_return(raw)
+                    raw=input(prompt)
+                to_return=type_return(raw)
             except KeyboardInterrupt:
                 raise
             except Exception:
                 # conversion failed
                 if typing:
-                    type_text(f"Invalid Input\n{invalid_prompt}{end}", "\n", True, random_bounds)
+                    type_text(f"Invalid Input\n{invalid_prompt}{end}","\n",True,random_bounds)
                 else:
                     print(f"Invalid Input\n{invalid_prompt}")
                 continue
             # validate range or membership
             if valid is None:
                 return to_return
-            if isinstance(valid, tuple) and len(valid) == 2:
-                if valid[0] <= to_return <= valid[1]:
+            if isinstance(valid,tuple) and len(valid)==2:
+                if valid[0] <=to_return <=valid[1]:
                     return to_return
                 else:
                     if typing:
-                        type_text(f"Invalid Amount\nInput must be between {valid[0]} and {valid[1]}{end}", "\n", True, random_bounds)
+                        type_text(f"Invalid Amount\nInput must be between {valid[0]} and {valid[1]}{end}","\n",True,random_bounds)
                     else:
                         print(f"Invalid Amount\nInput must be between {valid[0]} and {valid[1]}")
                     continue
-            if isinstance(valid, list):
+            if isinstance(valid,list):
                 if to_return in valid:
                     return to_return
                 else:
                     if typing:
-                        type_text(f"Invalid Input\nInput must be one of: {valid}{end}", "\n", True, random_bounds)
+                        type_text(f"Invalid Input\nInput must be one of: {valid}{end}","\n",True,random_bounds)
                     else:
                         print(f"Invalid Input\nInput must be one of: {valid}")
                     continue
@@ -322,7 +322,7 @@ def get_valid_type(type_return: type, prompt, invalid_prompt="Invalid input. Ple
 # -------------------------
 def get_error_type(error_number):
     """Return a human-readable error string for a given error number."""
-    errors = [
+    errors=[
         None,
         "error 001 is error in get_valid_type function",
         "error 002 is error in get_error_type function",
@@ -372,18 +372,18 @@ def get_error_type(error_number):
 # -------------------------
 # Random / math / misc
 # -------------------------
-def alternate_random(bounds, type_of_random=int, seed=None):
+def alternate_random(bounds,type_of_random=int,seed=None):
     """
     Deterministic-ish alternate random using system values.
-    bounds: (min, max) where max > min
+    bounds: (min,max) where max > min
     type_of_random: int or float
     """
     try:
-        if not (isinstance(bounds, (tuple, list)) and len(bounds) == 2):
+        if not (isinstance(bounds,(tuple,list)) and len(bounds)==2):
             raise ValueError("bounds must be a tuple/list of length 2")
-        a, b = bounds
+        a,b=bounds
         # build a seed from available system values
-        nums = []
+        nums=[]
         try:
             nums.append(os.getpid())
             nums.append(os.getppid())
@@ -392,21 +392,21 @@ def alternate_random(bounds, type_of_random=int, seed=None):
             nums.append((int(time.time()) >> 8) & 0xFFFF)
         nums.append(os.cpu_count() or 1)
         try:
-            size = os.path.getsize(__file__)
+            size=os.path.getsize(__file__)
         except Exception:
-            size = int(time.time() * 1000) & 0xFFFF
+            size=int(time.time() * 1000) & 0xFFFF
         nums.append(size)
         nums.append(int(time.time() * 1000) & 0xFFFFFFFF)
         if seed is None:
-            seed_val = sum(nums)
+            seed_val=sum(nums)
         else:
-            seed_val = seed + sum(nums)
+            seed_val=seed + sum(nums)
         # simple mixing
-        random_number = (seed_val * 1103515245 + 12345) & 0x7FFFFFFF
+        random_number=(seed_val * 1103515245 + 12345) & 0x7FFFFFFF
         # scale into range
-        span = max(1, b - a)
-        scaled = a + (random_number % span)
-        if type_of_random == int:
+        span=max(1,b - a)
+        scaled=a + (random_number % span)
+        if type_of_random==int:
             return int(scaled)
         return float(a + (random_number / 0x7FFFFFFF) * span)
     except Exception as e:
@@ -414,46 +414,46 @@ def alternate_random(bounds, type_of_random=int, seed=None):
 
 def factorial(n):
     try:
-        n = int(n)
+        n=int(n)
         if n < 0:
             raise ValueError("n must be non-negative")
-        if n in (0, 1):
+        if n in (0,1):
             return 1
-        result = 1
-        for i in range(2, n + 1):
-            result *= i
+        result=1
+        for i in range(2,n + 1):
+            result *=i
         return result
     except Exception as e:
         raise RuntimeError("error 014 occurred in factorial") from e
 
 def fibonacci(n):
     try:
-        n = int(n)
-        if n <= 0:
+        n=int(n)
+        if n <=0:
             return 0
-        if n == 1:
+        if n==1:
             return 1
-        a, b = 0, 1
-        for _ in range(2, n + 1):
-            a, b = b, a + b
+        a,b=0,1
+        for _ in range(2,n + 1):
+            a,b=b,a + b
         return b
     except Exception as e:
         raise RuntimeError("error 015 occurred in fibonacci") from e
 
 def is_prime(n):
     try:
-        n = int(n)
-        if n <= 1:
+        n=int(n)
+        if n <=1:
             return False
-        if n <= 3:
+        if n <=3:
             return True
-        if n % 2 == 0:
+        if n % 2==0:
             return False
-        i = 3
-        while i * i <= n:
-            if n % i == 0:
+        i=3
+        while i * i <=n:
+            if n % i==0:
                 return False
-            i += 2
+            i +=2
         return True
     except Exception as e:
         raise RuntimeError("error 016 occurred in is_prime") from e
@@ -463,15 +463,15 @@ def is_prime(n):
 # -------------------------
 def get_ip_adress():
     try:
-        hostname = socket.gethostname()
+        hostname=socket.gethostname()
         return socket.gethostbyname(hostname)
     except Exception as e:
         raise RuntimeError("error 017 occurred in get_ip_adress") from e
 
 def get_mac_address():
     try:
-        mac = uuid.getnode()
-        return ':'.join(("%012X" % mac)[i:i+2] for i in range(0, 12, 2))
+        mac=uuid.getnode()
+        return ':'.join(("%012X" % mac)[i:i+2] for i in range(0,12,2))
     except Exception as e:
         raise RuntimeError("error 018 occurred in get_mac_address") from e
 
@@ -493,21 +493,21 @@ def get_system_info():
 # -------------------------
 def read_file(file_path):
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path,'r',encoding='utf-8') as f:
             return f.read()
     except Exception as e:
         raise RuntimeError("error 020 occurred in read_file") from e
 
-def write_file(file_path, contents):
+def write_file(file_path,contents):
     try:
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path,'w',encoding='utf-8') as f:
             f.write(contents)
     except Exception as e:
         raise RuntimeError("error 021 occurred in write_file") from e
 
-def append_file(file_path, contents):
+def append_file(file_path,contents):
     try:
-        with open(file_path, 'a', encoding='utf-8') as f:
+        with open(file_path,'a',encoding='utf-8') as f:
             f.write(contents)
     except Exception as e:
         raise RuntimeError("error 022 occurred in append_file") from e
@@ -532,7 +532,7 @@ def list_files(directory):
 
 def create_directory(directory):
     try:
-        os.makedirs(directory, exist_ok=True)
+        os.makedirs(directory,exist_ok=True)
     except Exception as e:
         raise RuntimeError("error 026 occurred in create_directory") from e
 
@@ -583,10 +583,10 @@ def get_linenumber():
 # -------------------------
 class threads:
     """Lightweight wrapper around threading.Thread with some helpers."""
-    def __init__(self, target, args=()):
+    def __init__(self,target,args=()):
         try:
-            self.thread = threading.Thread(target=target, args=args)
-            self.thread.daemon = True
+            self.thread=threading.Thread(target=target,args=args)
+            self.thread.daemon=True
         except Exception as e:
             raise RuntimeError("error 006 occurred in threads.__init__") from e
 
@@ -596,7 +596,7 @@ class threads:
         except Exception as e:
             raise RuntimeError("error 007 occurred in threads.start") from e
 
-    def join(self, timeout=None):
+    def join(self,timeout=None):
         try:
             self.thread.join(timeout)
         except Exception as e:
@@ -609,7 +609,7 @@ class threads:
             raise RuntimeError("error 009 occurred in threads.is_alive") from e
 
     @staticmethod
-    def repeat_function(func, times, delay=0, args=()):
+    def repeat_function(func,times,delay=0,args=()):
         try:
             for _ in range(times):
                 func(*args)
@@ -618,7 +618,7 @@ class threads:
             raise RuntimeError("error 010 occurred in threads.repeat_function") from e
 
     @staticmethod
-    def repeat_function_until_stop(func, delay=0, args=()):
+    def repeat_function_until_stop(func,delay=0,args=()):
         try:
             while True:
                 func(*args)
@@ -628,13 +628,13 @@ class threads:
 
     def get_data(self):
         try:
-            return getattr(self.thread, "data", None)
+            return getattr(self.thread,"data",None)
         except Exception as e:
             raise RuntimeError("error 012 occurred in threads.get_data") from e
 
-    def set_data(self, data):
+    def set_data(self,data):
         try:
-            setattr(self.thread, "data", data)
+            setattr(self.thread,"data",data)
         except Exception as e:
             raise RuntimeError("error 013 occurred in threads.set_data") from e
 
@@ -644,21 +644,21 @@ class threads:
             class InputThread(threading.Thread):
                 def __init__(self):
                     super().__init__(daemon=True)
-                    self.queue = queue.Queue()
+                    self.queue=queue.Queue()
 
                 def run(self):
                     while True:
-                        if select.select([sys.stdin], [], [], 0.1)[0]:
-                            user_input = sys.stdin.readline().rstrip("\n")
+                        if select.select([sys.stdin],[],[],0.1)[0]:
+                            user_input=sys.stdin.readline().rstrip("\n")
                             self.queue.put(user_input)
 
                 def get_input(self):
-                    items = []
+                    items=[]
                     while not self.queue.empty():
                         items.append(self.queue.get())
                     return items
 
-            self.input_thread = InputThread()
+            self.input_thread=InputThread()
             self.input_thread.start()
             return self.input_thread
         except Exception as e:

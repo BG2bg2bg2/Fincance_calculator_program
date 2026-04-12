@@ -20,7 +20,7 @@ def make_password():
         #if symbol is true then make random randint 1 thorugh 4
         if symbol:
             rand1=random.randint(1,4)
-            #if the random number is 1, make a random randint 33-47
+            #if the random number is 1,make a random randint 33-47
             if rand1==1:
                 rand2=random.randint(33,47)
             #if random is 2 make a random number form 58 through 64
@@ -90,6 +90,6 @@ def make_password():
         out=""
         #make a while loop for x in password set
         for x in password_set:
-            #make out be out with x, return out 
+            #make out be out with x,return out 
             out=f"{out}{x}"
         return(out)

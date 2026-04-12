@@ -4,87 +4,112 @@
 
 import utill_functions
 import random_password_generator
+import tkinter as tk
+from tkinter import messagebox
 #make a function called login 
-def login(data):
-    #make a while true loop 
-    while True:
-        chose = utill_functions.get_valid_type(int,"0 to exit\n1 to to login\n2 to to make an account\nwhat do you want: ",valid=(0,2))
-          
-        #if choice is to exit break and go to the main funtion   
-        if chose == 0:
-            return False,False
-        #else if choice is to login
-        elif chose == 1:
-            #make username match to an input asking for the username
-            user = utill_functions.get_valid_type(str,"Enter your username: ")
-            passw=utill_functions.get_valid_type(str,"what is your password: ")
-            #open the filepath and read it as file 
-            for x in data:
-                if x["username"]==user and passw==x["password"]:
-                    return user,passw
-            #make user found false
-            else:
-            #make a loop in row 
-                print("no acount with that name and password")
-                #if there is not in row return 
-                #if there is a account make user found true
+class login_logout(tk.Frame):
+    def __init__(self,gui_manager,manager,user_data):
+        super().__init__(gui_manager)
+        self.manager=manager
+        self.user_data=user_data
+        tk.Button(self,text="make acount",command=lambda: manager.show_screen("make_acount")).pack()
+        tk.Button(self,text="quit",command=quit).pack()
+        tk.Label(self,text="username",font=("Arial",5)).pack()
+        self.username=tk.Entry(self)
+        self.username.pack()
+        tk.Label(self,text="password",font=("Arial",5)).pack()
+        self.password=tk.Entry(self,show="*")
+        self.password.pack()
+        tk.Button(self,text="login",command=self.validate).pack()
+    def validate(self):
+        user=self.username.get()
+        passw=self.password.get()
+        
+        found=False
+        for x in self.user_data:
+            if x["username"] == user and x["password"] == passw:
+                self.manager.user=user
+                self.manager.password=passw
+                self.manager.show_screen("main_menu")
+                found=True
+                break
+        if not found:
+            tk.messagebox.showerror("Error","Invalid username or password")
+class make_acount(tk.Frame):
+    def __init__(self,gui_manager,manager,user_data):
+        super().__init__(gui_manager)
+        self.manager=manager
+        self.user_data=user_data
+        self.expenses,self.amounts,self.budgets=[],[],[]
+        tk.Button(self,text="Go Back",command=lambda: manager.show_screen("login_logout")).pack(anchor="w")
+        
+        tk.Label(self,text="Username").pack()
+        self.username=tk.Entry(self)
+        self.username.pack()
 
-            #call the funtion for gov to handle his part 
-        #else if choice of the user create an account
-        elif chose == 2:
-            while True:
-                #make a input asking the user for a name 
-                "".replace(",","")
-                username=utill_functions.get_valid_type(str,"what is your username: ").replace(",","").replace('"',"").replace("`","").replace("_","")
-                if utill_functions.get_valid_type(str,f"do you want {username} to be your username (this canot be changed later)(y/n): ",valid=["y",'n'])=="y":
-                    for x in data:
-                        if x["username"]==username:
-                            print("this username is already taken")
-                    break
-            #ask the user if they want to type their own password 
-            if utill_functions.get_valid_type(str,"do you want a random password(y/n): ",valid=["y","n"])=="y":
-                #if choice is to type their own password, make them type the password
-                password=random_password_generator.make_password()#use this
-                #elif choice is to generate a password call the random password generator
-                print(f"this is your password: {password}\nwrite it down")
-            else:
-            #else print to select an acual option
-                while True:
-                    password=utill_functions.get_valid_type(str,"what is your password: ")
-                    if utill_functions.get_valid_type(str,f"do you want {password} to be your password (this canot be changed later)(y/n): ",valid=["y",'n'])=="y":
-                        break
-            #save the password to the csv file
-            while True:
-                income=utill_functions.get_valid_type(int,"what is your hourly income: ",valid=(0,10000000000))
-                if utill_functions.get_valid_type(str,f"is ${income} your hourly wage (y/n): ",valid=["y",'n'])=="y":
-                    break
-            expenses=[]
-            amounts=[]
-            budgets=[]
-            count=0
-            while True:
-                count+=1
-                expence=utill_functions.get_valid_type(str,f"what is the name of your #{count} expence(0 to stop adding more): ").replace(",","").replace('"',"").replace("`","").replace("_","")
-                if expence=="0":
-                    if len(expenses)>0:
-                        break
-                    else:
-                        print("you cant have 0 expenses")
-                        continue
-                amount=utill_functions.get_valid_type(int,f"what is the cost of {expence}: ")
-                budget=utill_functions.get_valid_type(int,f"what is your budget for {expence}: ")
-                if utill_functions.get_valid_type(str,f"do you want to add {expence}:{amount}:{budget}(y/n): ",valid=["y","n"])=="y":
-                    expenses.append(expence)
-                    amounts.append(amount)
-                    budgets.append(budget)
-            while True:
-                savings=utill_functions.get_valid_type(int,"how much is in your savings: ",valid=(0,100**100))
-                if utill_functions.get_valid_type(str,f"is ${savings} your savings(y/n): ",valid=["y",'n'])=="y":
-                    break
-            data.add([username,password,income,utill_functions.csv_file.to_list(expenses),utill_functions.csv_file.to_list(amounts),utill_functions.csv_file.to_list(budgets),savings,0])
-            continue
+        tk.Label(self,text="Password (leave blank for random)").pack()
+        self.password=tk.Entry(self)
+        self.password.pack()
 
+        tk.Label(self,text="Hourly Income").pack()
+        self.income=tk.Entry(self,validate='key',validatecommand=manager.valid_int)
+        self.income.pack()
 
+        tk.Label(self,text="Savings").pack()
+        self.savings=tk.Entry(self,validate='key',validatecommand=manager.valid_int)
+        self.savings.pack()
 
+        tk.Label(self,text="Add Expenses",font=("Arial",10,"bold")).pack(pady=5)
+        exp_frame=tk.Frame(self)
+        exp_frame.pack()
+        
+        tk.Label(exp_frame,text="Name").grid(row=0,column=0)
+        self.exp_name=tk.Entry(exp_frame,width=10)
+        self.exp_name.grid(row=1,column=0)
 
+        tk.Label(exp_frame,text="Cost").grid(row=0,column=1)
+        self.exp_cost=tk.Entry(exp_frame,width=8)
+        self.exp_cost.grid(row=1,column=1)
 
+        tk.Label(exp_frame,text="Budget").grid(row=0,column=2)
+        self.exp_budget=tk.Entry(exp_frame,width=8)
+        self.exp_budget.grid(row=1,column=2)
+
+        tk.Button(self,text="Add Expense",command=self.add_expense_to_list).pack(pady=5)
+        self.expense_listbox=tk.Listbox(self,height=4)
+        self.expense_listbox.pack(fill="x",padx=20)
+        tk.Button(self,text="CREATE ACCOUNT",bg="green",fg="white",
+                  command=self.create_user).pack(pady=20)
+    def add_expense_to_list(self):
+        name=self.exp_name.get().strip().replace(",","")
+        cost=self.exp_cost.get()
+        budget=self.exp_budget.get()
+        
+        if name and cost.isdigit() and budget.isdigit():
+            self.expenses.append(name)
+            self.amounts.append(int(cost))
+            self.budgets.append(int(budget))
+            self.expense_listbox.insert(tk.END,f"{name}: ${cost}, budget: ${budget}")
+            
+            self.exp_name.delete(0,tk.END)
+            self.exp_cost.delete(0,tk.END)
+            self.exp_budget.delete(0,tk.END)
+        else:
+            messagebox.showwarning("Invalid input(s)","Input a valid input")
+
+    def create_user(self):
+        user=self.username.get().strip()
+        passw=self.password.get()
+        income=self.income.get()
+        savings=self.savings.get()
+
+        if not user or not income or not savings:
+            messagebox.showwarning("Invalid input(s)","Input a valid input")
+            return
+
+        if not passw:
+            passw=random_password_generator.make_password()
+            messagebox.showinfo("Generated Password",f"Your password is: {passw}")
+
+        self.user_data.add([user,passw,int(income),utill_functions.csv_file.to_list(self.expenses),utill_functions.csv_file.to_list(self.amounts),utill_functions.csv_file.to_list(self.budgets),int(savings),0])
+        self.manager.show_screen("main_menu")
