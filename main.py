@@ -27,7 +27,8 @@
         #else if user choice is 3 then tell the user to select again,continue 
             
             #display thanks for using the FINANCE CALCULATOR PROGRAM
-import budgeting_and_savings_goal,helper,login_logout,utill_functions,random_password_generator,gui
+import budgeting_and_savings_goal
+import helper,login_logout,utill_functions,random_password_generator,gui
 import tkinter as tk
 from tkinter import messagebox
 
@@ -79,7 +80,7 @@ class change_stats(tk.Frame):
         tk.Button(self,text="go back",command=lambda: self.manager.show_screen("see_stats")).pack()
         tk.Button(self,text="add expenses",command=lambda: self.manager.show_screen("add_expenses")).pack()
         tk.Button(self,text="remove expenses",command=lambda: self.manager.show_screen("remove_expenses")).pack()
-        tk.Button(self,text="change expenses",command=lambda: self.manager.show_screen("change_expenses")).pack()
+        tk.Button(self,text="change budgeting",command=lambda: self.manager.show_screen("budgeting_and_saveings")).pack()
         tk.Button(self,text="change savings",command=lambda: self.manager.show_screen("change_savings")).pack()
 class change_savings(tk.Frame):
     def __init__(self,gui_manager,manager,user_data):
@@ -91,7 +92,8 @@ class change_savings(tk.Frame):
         for x in self.user_data:
             if x["username"]==self.manager.user and self.manager.password==x["password"]:
                 tk.Label(self,text=f"old savings amount: {x["savings"]}").pack()
-        self.savings=tk.Entry(self,validate='key',validatecommand=self.manager.valid_int).pack()
+        self.savings=tk.Entry(self,validate='key',validatecommand=self.manager.valid_int)
+        self.savings.pack()
         tk.Button(self,text="enter",command=self.change_thy_saveings).pack()
     def change_thy_saveings(self):
         for x in self.user_data:
@@ -249,6 +251,11 @@ class manage_overtime_savings(tk.Frame):
             row["savings_over_time"] = ""
             self.user_data.update_data(self.manager.user, row)
             self.manager.show_screen("manage_overtime_savings")
+
+
+
+
+
 def main(gooy):
     
     data=utill_functions.csv_file("data.csv")

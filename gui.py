@@ -3,7 +3,8 @@ from tkinter import messagebox
 import utill_functions
 #import all the menus as themselfs
 from login_logout import make_acount,login_logout
-from main import see_stats,change_savings,change_stats,main_menu,change_expenses
+from main import see_stats,change_savings,change_stats,main_menu,change_expenses,manage_overtime_savings
+from budgeting_and_savings_goal import budgeting_and_saveings
 class gui_manager(tk.Tk):
     def __init__(self,data):
         self.data=data
@@ -21,7 +22,7 @@ class gui_manager(tk.Tk):
         self.user=""
         self.password="" 
         self.frames={}
-        for x in (main_menu,login_logout,make_acount,see_stats,change_savings,change_stats,change_expenses): #put all the menus here
+        for x in (main_menu,login_logout,make_acount,see_stats,change_savings,change_stats,change_expenses,manage_overtime_savings,budgeting_and_saveings): #put all the menus here
             page_name=x.__name__.replace("Page","")
             frame=x(gui_manager=container,manager=self,user_data=self.data)
             self.frames[page_name]=frame

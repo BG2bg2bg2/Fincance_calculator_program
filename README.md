@@ -16,6 +16,7 @@ Math
 
 3. you need to downlaod the libraries in the termimal
 
+4. you can't exit the windows that pop up but you can minimize them
 
 ## License
 ***

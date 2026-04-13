@@ -6,7 +6,7 @@
 # - Categories already exist (Rent,Food,Transportation,etc.)
 # - Income/expenses may already be stored by Edwing/Liam
 import utill_functions
-
+import tkinter as tk
 
 # Ask user:
 # 1. Set budget limits
@@ -15,26 +15,102 @@ import utill_functions
 # 4. Savings goal tracker
 # 5. Go back to main menu
 
+class budgeting_and_saveings(tk.Frame):
+    def __init__(self, gui_manager, manager, user_data):
+        super().__init__(gui_manager)
+        self.manager = manager
+        self.user_data = user_data
+    def refresh(self):
+        #makes a button for setting budget limits
+        tk.Button(self,text="set budget limits",command=lambda: self.manager.show_screen("set_budget_limits")).pack()
+        #makes a button for comparing budgets
+        tk.Button(self,text="compare budgets",command=lambda: self.manager.show_screen("compare_budgets")).pack()
+        #makes a button for adding budgets
+        tk.Button(self,text="add budget category",command=lambda: self.manager.show_screen("add_budget_categories")).pack()
+        #makes a button fo creating budgets
+        tk.Button(self,text="create budget plan ",command=lambda: self.manager.show_screen("create_budget_plan")).pack()
+        #makes a button for saving goal
+        tk.Button(self,text="set savings goal",command=lambda: self.manager.show_screen("savings_goals_tracker")).pack()
+        #button for going back to main menu
+        tk.Button(self,text="go back",command=lambda: self.manager.show_screen("main_menu")).pack()
+class set_budget_limits(tk.Frame):
+    def __init__(self, gui_manager, manager, user_data):
+        super().__init__(gui_manager)
+        self.manager = manager
+        self.user_data = user_data
+    def refresh(self):
+        for x in self.user_data:
+            if x["username"]==self.manager.user and self.manager.password==x["password"]:
+                limits=[]
+                tk.Button(self,text="go back",command=lambda: self.manager.show_screen("budgeting_and_saveings")).pack()
+                for num,y in enumerate(utill_functions.csv_file.from_underscore(x["budget_limits"])):
+                    cost=utill_functions.csv_file.from_underscore(x["expenses_amount"])[num]
+                    name=utill_functions.csv_file.from_underscore(x["expenses_name"])[num]
+                    #display warning message if user over budget amount
+                    tk.Label(self,text=f"{f"!!!OVER BUDGET by {cost-y}!!!" if cost>y else ""} name: {name}, cost: {cost} budget limit: ")
+                    limits.append(tk.Entry(self,validate='key',validatecommand=self.manager.valid_int))
+                    limits[num].insert(0, int(y))
+                    limits[num].pack(side="right")
+                tk.Button(self,text="change",command=self.get_info).pack()
+    def get_info(self):
+        new_names = []
+        new_costs = []
+        new_budgets = []
+        for x in self.boxes:
+            new_names.append(x["name"].get() if x["name"].get() else "Unnamed")
+            new_costs.append(x["cost"].get() if x["cost"].get() else "0")
+            new_budgets.append(x["budget"].get() if x["budget"].get() else "0")
+        for x in self.user_data:
+            if x["username"] == self.manager.user and x["password"] ==self.manager.password:
+                x["expenses_name"] = utill_functions.csv_file.to_list(new_names)
+                x["expenses_amount"] = utill_functions.csv_file.to_list(new_costs)
+                x["budget_expense"] = utill_functions.csv_file.to_list(new_budgets)
+                self.user_data.update_data(self.manager.user, x)
+                self.manager.show_screen("change_stats")
+#this is just for reference
+tk.Label(self, text=f"old savings amount: {x["savings"]}").pack()
+cost=tk.Entry(row,width=10,validate='key',validatecommand=self.manager.valid_int)
+cost.insert(0, int(vals[num]))
+cost.pack(side="left")
 
+
+
+
+                
 # BUDGETING SECTION
 
+class add_budget_categories(tk.Frame):
+    def __init__(self, gui_manager, manager, user_data):
+        super().__init__(gui_manager)
+        self.manager = manager
+        self.user_data = user_data
+    def refresh(self):
+         for x in self.user_data:
+            if x["username"]==self.manager.user and self.manager.password==x["password"]:
+                for num,y in enumerate(utill_functions.csv_file.from_underscore(x["budget_expense"])):
+                    tk.Label(f"categories: {utill_functions.csv_file.from_underscore("expenses_name")}  budget: {utill_functions.csv_file.from_underscore("expenses_amount")}")
+                    tk.Button(self,text="go back",command=lambda: self.manager.show_screen("main_menu")).pack()
+                    
+    
+                
 
-# define function as set_budget_limits()
-def set_budget_limits():
-    # ask user for total monthly income
-    income=gooy.get_valid_type(float,"What is your monthly income?: $")
-    # for each category:
-        # ask user to set a spending limit
-    spending_limit=gooy.get_valid_type(float,"What is your spending limit?: $")
-    # store budget limits (will be saved by Liam's data system)
 
-    # display:
-        # "Budget limits successfully set"
 
-# If 2 is the option,then all this: 
+
+
 
 # define function as create_budget_plan()
-def add_budget_categories(data,gooy):
+
+class set_budget_limits(tk.Frame):
+    def __init__(self, gui_manager, manager, user_data):
+        super().__init__(gui_manager)
+        self.manager = manager
+        self.user_data = user_data
+    def refresh(self):
+        for x in self.user_data:
+            if x["username"]==self.manager.user and self.manager.password==x["password"]:
+
+
 #make thing so user just keeps listing categories till they say some -- sike,I changed my mind
     budget_categories=[]
     budget_category_maxes=[]
@@ -46,7 +122,29 @@ def add_budget_categories(data,gooy):
     for category in budget_categories: 
             max=gooy.get_valid_type(int,f"Here are your categories: {budget_categories} \nWhat is the max amount of money you'll spend on each category? (enter one category's amount then enter,and continue until all categories are satisfied): ",invalid_prompt=0)
             budget_category_maxes.append(max)
+
             
+            
+
+
+            
+            
+            
+            
+
+
+
+            
+
+
+
+
+class create_budget_plan(tk.Frame):
+    def __init__(self, gui_manager, manager, user_data):
+        super().__init__(gui_manager)
+        self.manager = manager
+        self.user_data = user_data
+        
 def create_budget_plan(data,spendings,gooy):
     choice=input("Do you want to make a budget plan? (y/n): ").lower
 
@@ -67,6 +165,11 @@ def create_budget_plan(data,spendings,gooy):
         # "Your income is $___"
         # "Your total planned spending is $___"
         # "Money left after budgeting: $___"
+        
+    elif choice =="n":
+        return 
+    
+ 
 
 
 # define function as compare_expenses_to_budget()
@@ -134,26 +237,28 @@ def savings_goals_tracker(data,gooy):
 
 
 
-        # INTEREST CALCULATION (concerning savings)
+        # INTEREST CALCULATION (concerning SAVINGS)
 
-def intrest_calculation(data,savings,gooy):
+def interest_calculation(data,savings,gooy):
         # ask user:
-        intrest_rate=0
-        intrest_rate=gooy.get_valid_type(float,"Optional,what is your interest rate?\npress enter to skip: ")
+        interest_rate=0
+        interest_rate=gooy.get_valid_type(float,"Optional, what is your interest rate?\nenter 0 to skip: ")
             # "Enter interest rate (optional,press enter to skip)"
 
         # if user enters rate:
             # convert rate to decimal
-        if intrest_rate !=0:
+        if interest_rate != 0:
             # calculate interest:
-            intrest_amount=savings_goals_tracker(data,gooy) * intrest_rate
+            interest_amount=savings_goals_tracker(data,gooy) * interest_rate
                 # interest_amount=current savings * rate
     
             # add interest to savings
-            savings +=intrest_amount
+            savings +=interest_amount
             # display:crea
-            messagebox.showinfo(f"With intrest,your savings is now {savings}")
+            messagebox.showinfo(f"With interest,your savings is now {savings}")
                 # "With interest,your savings is now $___"
+        elif interest_rate == "0":
+            return
 
 
         # FUTURE PROJECTION
@@ -187,3 +292,24 @@ def BG_main(username,password,data,gooy):
         compare_expenses_to_budget(data,gooy)
     elif choice=="3":
         savings_goals_tracker(data,gooy)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
