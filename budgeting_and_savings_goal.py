@@ -7,6 +7,7 @@
 # - Income/expenses may already be stored by Edwing/Liam
 import utill_functions
 import tkinter as tk
+from tkinter import messagebox
 
 # Ask user:
 # 1. Set budget limits
@@ -23,12 +24,6 @@ class budgeting_and_saveings(tk.Frame):
     def refresh(self):
         #makes a button for setting budget limits
         tk.Button(self,text="set budget limits",command=lambda: self.manager.show_screen("set_budget_limits")).pack()
-        #makes a button for comparing budgets
-        tk.Button(self,text="compare budgets",command=lambda: self.manager.show_screen("compare_budgets")).pack()
-        #makes a button for adding budgets
-        tk.Button(self,text="add budget category",command=lambda: self.manager.show_screen("add_budget_categories")).pack()
-        #makes a button fo creating budgets
-        tk.Button(self,text="create budget plan ",command=lambda: self.manager.show_screen("create_budget_plan")).pack()
         #makes a button for saving goal
         tk.Button(self,text="set savings goal",command=lambda: self.manager.show_screen("savings_goals_tracker")).pack()
         #button for going back to main menu
@@ -38,113 +33,62 @@ class set_budget_limits(tk.Frame):
         super().__init__(gui_manager)
         self.manager = manager
         self.user_data = user_data
+        self.limits = []
+
     def refresh(self):
+        self.limits = []
+
         for x in self.user_data:
-            if x["username"]==self.manager.user and self.manager.password==x["password"]:
-                limits=[]
-                tk.Button(self,text="go back",command=lambda: self.manager.show_screen("budgeting_and_saveings")).pack()
-                for num,y in enumerate(utill_functions.csv_file.from_underscore(x["budget_limits"])):
-                    cost=utill_functions.csv_file.from_underscore(x["expenses_amount"])[num]
-                    name=utill_functions.csv_file.from_underscore(x["expenses_name"])[num]
-                    #display warning message if user over budget amount
-                    tk.Label(self,text=f"{f"!!!OVER BUDGET by {cost-y}!!!" if cost>y else ""} name: {name}, cost: {cost} budget limit: ")
-                    limits.append(tk.Entry(self,validate='key',validatecommand=self.manager.valid_int))
-                    limits[num].insert(0, int(y))
-                    limits[num].pack(side="right")
-                tk.Button(self,text="change",command=self.get_info).pack()
-    def get_info(self):
-        new_names = []
-        new_costs = []
-        new_budgets = []
-        for x in self.boxes:
-            new_names.append(x["name"].get() if x["name"].get() else "Unnamed")
-            new_costs.append(x["cost"].get() if x["cost"].get() else "0")
-            new_budgets.append(x["budget"].get() if x["budget"].get() else "0")
-        for x in self.user_data:
-            if x["username"] == self.manager.user and x["password"] ==self.manager.password:
-                x["expenses_name"] = utill_functions.csv_file.to_list(new_names)
-                x["expenses_amount"] = utill_functions.csv_file.to_list(new_costs)
-                x["budget_expense"] = utill_functions.csv_file.to_list(new_budgets)
-                self.user_data.update_data(self.manager.user, x)
-                self.manager.show_screen("change_stats")
-#this is just for reference
-tk.Label(self, text=f"old savings amount: {x["savings"]}").pack()
-cost=tk.Entry(row,width=10,validate='key',validatecommand=self.manager.valid_int)
-cost.insert(0, int(vals[num]))
-cost.pack(side="left")
-
-
-
-
+            if x["username"] == self.manager.user and self.manager.password == x["password"]:
+                tk.Button(self, text="go back", command=lambda: self.manager.show_screen("budgeting_and_saveings")).pack()
                 
-# BUDGETING SECTION
+                expenses_name = utill_functions.csv_file.from_underscore(x["expenses_name"])
+                expenses_amount = utill_functions.csv_file.from_underscore(x["expenses_amount"])
+                budget_limits = utill_functions.csv_file.from_underscore(x["budget_limits"])
 
-class add_budget_categories(tk.Frame):
-    def __init__(self, gui_manager, manager, user_data):
-        super().__init__(gui_manager)
-        self.manager = manager
-        self.user_data = user_data
-    def refresh(self):
-         for x in self.user_data:
-            if x["username"]==self.manager.user and self.manager.password==x["password"]:
-                for num,y in enumerate(utill_functions.csv_file.from_underscore(x["budget_expense"])):
-                    tk.Label(f"categories: {utill_functions.csv_file.from_underscore("expenses_name")}  budget: {utill_functions.csv_file.from_underscore("expenses_amount")}")
-                    tk.Button(self,text="go back",command=lambda: self.manager.show_screen("main_menu")).pack()
+                for num, y in enumerate(budget_limits):
+                    cost = expenses_amount[num]
+                    name = expenses_name[num]
                     
-    
+                    warning = f"!!!OVER BUDGET by {int(cost) - int(y)}!!!" if int(cost) > int(y) else ""
+                    tk.Label(self, text=f"{warning} name: {name}, cost: {cost} budget limit: ").pack()
+                    
+                    ent = tk.Entry(self, validate='key', validatecommand=self.manager.valid_int)
+                    ent.insert(0, int(y))
+                    ent.pack()
+                    self.limits.append(ent)
                 
+                tk.Button(self, text="change", command=self.get_info).pack()
 
-
-
-
-
-
-# define function as create_budget_plan()
-
-class set_budget_limits(tk.Frame):
-    def __init__(self, gui_manager, manager, user_data):
-        super().__init__(gui_manager)
-        self.manager = manager
-        self.user_data = user_data
-    def refresh(self):
-        for x in self.user_data:
-            if x["username"]==self.manager.user and self.manager.password==x["password"]:
-
-
-#make thing so user just keeps listing categories till they say some -- sike,I changed my mind
-    budget_categories=[]
-    budget_category_maxes=[]
-    category_amount=gooy.get_valid_type(int,"How many budgeting categories will you have? (Enter number): ",invalid_prompt=0)
-    for i in range(category_amount):
-            category_names=input(f"Name each of your {category_amount} categories {i + 1}: ")
-            budget_categories.append(category_names)
-
-    for category in budget_categories: 
-            max=gooy.get_valid_type(int,f"Here are your categories: {budget_categories} \nWhat is the max amount of money you'll spend on each category? (enter one category's amount then enter,and continue until all categories are satisfied): ",invalid_prompt=0)
-            budget_category_maxes.append(max)
-
-            
-            
-
-
-            
-            
-            
-            
-
-
-
-            
-
-
-
-
-class create_budget_plan(tk.Frame):
-    def __init__(self, gui_manager, manager, user_data):
-        super().__init__(gui_manager)
-        self.manager = manager
-        self.user_data = user_data
+    def get_info(self):
+        new_values = [ent.get() for ent in self.limits]
         
+        for x in self.user_data:
+            if x["username"] == self.manager.user and x["password"] == self.manager.password:
+                x["budget_limits"] = utill_functions.csv_file.to_underscore(new_values)
+                self.user_data.update_data(self.manager.user, x)
+                self.manager.show_screen("budgeting_and_saveings")
+                break
+
+class savings_goals_tracker(tk.Frame):
+    def __init__(self, gui_manager, manager, user_data):
+        super().__init__(gui_manager)
+        self.manager = manager
+        self.user_data = user_data
+        self.limits = []
+    def refresh(self):
+
+        for x in self.user_data:
+            if x["username"] == self.manager.user and self.manager.password == x["password"]:
+                tk.Button(self, text="go back", command=lambda: self.manager.show_screen("budgeting_and_saveings")).pack()
+                thing =utill_functions.csv_file.from_underscore(x["savings_over_time"])
+                if thing==[""]:
+                    messagebox.showinfo("invalid choise","you do not have any savings history")
+                else:
+                    for num,y in enumerate(thing):
+                        tk.Label(self,text=f"item {num}:{y}")
+#this is just for reference
+
 def create_budget_plan(data,spendings,gooy):
     choice=input("Do you want to make a budget plan? (y/n): ").lower
 
