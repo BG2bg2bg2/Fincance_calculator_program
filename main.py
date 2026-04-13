@@ -57,7 +57,7 @@ class see_stats(tk.Frame):
                 tk.Label(self,text=f"password:{x["password"]}").pack()
                 tk.Label(self,text=f"password:{x["income"]}").pack()
                 tk.Label(self,text=f"password:{x["savings"]}").pack()
-                tk.Label(self,text="refer to the popup window for more information (close when done)").pack()
+                tk.Label(self,text="refer to the popup window for more information (do not close when done)").pack()
                 tk.Button(self,text="go back",command=lambda: self.manager.show_screen("main_menu")).pack()
                 expens=utill_functions.csv_file.from_underscore(x["expenses_name"])
                 mount=utill_functions.csv_file.from_underscore(x["expenses_amount"])
